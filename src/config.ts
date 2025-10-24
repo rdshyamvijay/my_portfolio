@@ -1,92 +1,215 @@
+export const supportedLanguages = ["en", "de"] as const;
+export type SupportedLanguage = (typeof supportedLanguages)[number];
+
+export type LocalizedString = Record<SupportedLanguage, string>;
+export type LocalizedStringArray = Record<SupportedLanguage, string[]>;
+
+const makeCopy = (en: string, de: string): LocalizedString => ({ en, de });
+const makeArrayCopy = (
+  en: string[],
+  de: string[],
+): LocalizedStringArray => ({ en, de });
+
+export const defaultLanguage: SupportedLanguage = "en";
+
 export const siteConfig = {
-  name: "Ryan Fitzgerald",
-  title: "Senior Software Engineer",
-  description: "Portfolio website of Ryan Fitzgerald",
+  name: makeCopy("Shyamkumar Selvakumar", "Shyamkumar Selvakumar"),
+  title: makeCopy("AI & Data Engineer", "KI- & Dateningenieur"),
+  description: makeCopy(
+    "Portfolio website of Shyamkumar Selvakumar",
+    "Portfolio-Website von Shyamkumar Selvakumar",
+  ),
   accentColor: "#1d4ed8",
   social: {
-    email: "your-email@example.com",
-    linkedin: "https://linkedin.com/in/yourprofile",
-    twitter: "https://x.com/rfitzio",
-    github: "https://github.com/RyanFitzgerald",
+    email: "rdshyamvijay99@gmail.com",
+    linkedin: "https://www.linkedin.com/in/shyamkumar7/",
+    github: "https://github.com/rdshyamvijay",
   },
-  aboutMe:
-    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem quos asperiores nihil consequatur tempore cupiditate architecto natus commodi corrupti quas quasi facere est, dignissimos odit nam veniam sapiente ut, vitae eligendi ipsum dolor, nostrum ullam impedit! Corrupti ratione mollitia temporibus necessitatibus, consectetur reiciendis recusandae id, dolorum quaerat, vero pariatur. Ratione!",
+  aboutMe: makeCopy(
+    "I’m an AI Engineer with a strong foundation in data engineering and analytics, focused on transforming complex data into intelligent, real-world applications. I design and build AI solutions, chatbots, and automation systems that streamline business processes and enhance decision-making. My work bridges LLMs, APIs, and data pipelines, turning raw information into meaningful, scalable AI products.",
+    "Ich bin KI-Ingenieur mit fundiertem Hintergrund in Data Engineering und Analytics und verwandle komplexe Daten in intelligente, praxisnahe Anwendungen. Ich konzipiere und entwickle KI-Lösungen, Chatbots und Automatisierungssysteme, die Geschäftsprozesse optimieren und bessere Entscheidungen ermöglichen. Meine Arbeit verbindet LLMs, APIs und Datenpipelines, um Rohdaten in aussagekräftige, skalierbare KI-Produkte zu verwandeln.",
+  ),
   skills: ["Javascript", "React", "Node.js", "Python", "AWS", "Docker"],
+  techStacks: [],
+  techStackSections: [
+    {
+      title: makeCopy("AI & Data Engineering", "KI- & Datenengineering"),
+      stacks: [
+        { name: "Python", icon: "/icons/python.svg", color: "#3776AB" },
+        { name: "SQL", icon: "/icons/sql.svg", color: "#336791" },
+        { name: "Snowflake", icon: "/icons/snowflake.svg", color: "#29B5E8" },
+        { name: "Power BI", icon: "/icons/powerbi.svg", color: "#F2C811" },
+        { name: "Tableau", icon: "/icons/tableau.svg", color: "#E8762C" },
+        { name: "MySQL", icon: "/icons/mysql.svg", color: "#4479A1" },
+        { name: "Oracle", icon: "/icons/oracle.svg", color: "#F80000" },
+        { name: "Informatica", icon: "/icons/informatica.svg", color: "#FF4F1F" },
+      ],
+    },
+    {
+      title: makeCopy("AI Applications & Automation", "KI-Anwendungen & Automatisierung"),
+      stacks: [
+        { name: "OpenAI", icon: "/icons/openai.svg", color: "#10A37F" },
+        { name: "Gemini AI", icon: "/icons/gemini.svg", color: "#4285F4" },
+        { name: "LangChain", icon: "/icons/langchain.svg", color: "#2A7DE1" },
+        { name: "Pinecone", icon: "/icons/pinecone.svg", color: "#00A388" },
+        { name: "n8n", icon: "/icons/n8n.svg", color: "#FF6B6B" },
+        { name: "Lovable", icon: "/icons/lovable.svg", color: "#FF71CF" },
+        { name: "Cursor", icon: "/icons/cursor.svg", color: "#7950F2" },
+        { name: "CrewAI", icon: "/icons/crewai.svg", color: "#0EA5E9" },
+      ],
+    },
+    {
+      title: makeCopy("Cloud & DevOps", "Cloud & DevOps"),
+      stacks: [
+        { name: "AWS", icon: "/icons/aws.svg", color: "#FF9900" },
+        { name: "Firebase", icon: "/icons/firebase.svg", color: "#FFCA28" },
+        { name: "Docker", icon: "/icons/docker.svg", color: "#0DB7ED" },
+        { name: "Git", icon: "/icons/git.svg", color: "#F05032" },
+        { name: "GitHub", icon: "/icons/github.svg", color: "#181717" },
+        { name: "Visual Studio Code", icon: "/icons/vscode.svg", color: "#0065A9" },
+      ],
+    },
+    {
+      title: makeCopy("Web Development", "Webentwicklung"),
+      stacks: [
+        { name: "PHP", icon: "/icons/php.svg", color: "#777BB4" },
+        { name: "Tailwind", icon: "/icons/tailwindcss.svg", color: "#38BDF8" },
+        { name: "React", icon: "/icons/react.svg", color: "#61DAFB" },
+        { name: "Blade", color: "#1A202C" },
+        { name: "TypeScript", icon: "/icons/typescript.svg", color: "#3178C6" },
+        { name: "CSS", icon: "/icons/css3.svg", color: "#1572B6" },
+      ],
+    },
+  ],
   projects: [
     {
-      name: "AI Dev Roundup Newsletter",
-      description:
-        "One concise email. Five minutes. Every Tuesday. Essential AI news & trends, production-ready libraries, powerful AI tools, and real-world code examples",
-      link: "https://aidevroundup.com/?ref=devportfolio",
-      skills: ["React", "Node.js", "AWS"],
+      name: makeCopy("AI Tile Visualizer App", "AI Tile Visualizer App"),
+      description: makeCopy(
+        "AI-powered tile visualization and design recommendation system. A smart tool that uses AI to analyze and render real-time tile design patterns for interior and construction projects, helping users preview textures, colours, and spatial layouts before implementation.",
+        "KI-gestütztes System zur Kachelvisualisierung und Designempfehlung. Ein intelligentes Tool, das KI nutzt, um Fliesendesigns für Innenausbau- und Bauprojekte in Echtzeit zu analysieren und darzustellen, damit Nutzer Texturen, Farben und Raumlayouts vor der Umsetzung beurteilen können.",
+      ),
+      link: "https://github.com/rdshyamvijay/AI-Tile-Visualizer-app",
+      skills: [
+        "React",
+        "Tailwind CSS",
+        "Python",
+        "Gemini API",
+        "Firebase",
+        "REST API",
+      ],
     },
     {
-      name: "Chrome Extension Mastery: Build Full-Stack Extensions with React & Node.js",
-      description:
-        "Master the art of building production-ready, full-stack Chrome Extensions using modern web technologies and best practices",
-      link: "https://fullstackextensions.com/?ref=devportfolio",
-      skills: ["React", "Node.js", "AWS"],
+      name: makeCopy(
+        "Multi-AI Agent Customer Support System",
+        "Multi-KI-Agenten-Kundensupportsystem",
+      ),
+      description: makeCopy(
+        "An intelligent multi-agent framework for automating customer interactions. It orchestrates AI agents for ticket classification, query routing, and personalised responses, learning continuously from context and feedback.",
+        "Ein intelligentes Multi-Agenten-Framework zur Automatisierung von Kundeninteraktionen. Es koordiniert KI-Agenten für Ticketklassifizierung, Anfragenrouting und personalisierte Antworten und lernt fortlaufend aus Kontext und Feedback.",
+      ),
+      link: "https://github.com/rdshyamvijay/Multi-AI-Agent-CustomerSupport",
+      skills: [
+        "Python",
+        "LangChain",
+        "OpenAI API",
+        "CrewAI",
+        "FastAPI",
+      ],
     },
     {
-      name: "ExtensionKit",
-      description:
-        "Kit to jump-start your Chrome extension projects with a variety of battle-tested starter templates & examples",
-      link: "https://extensionkit.io/?ref=devportfolio",
-      skills: ["React", "Node.js", "AWS"],
+      name: makeCopy("IoT Sensor Data Forecasting System", "IoT-Sensordaten-Vorhersagesystem"),
+      description: makeCopy(
+        "Developed a data-driven pipeline to forecast environmental sensor readings such as temperature and humidity using time-series modelling. Built an automated workflow for data cleaning, trend analysis, and predictive visualisation to support real-time IoT monitoring.",
+        "Entwickelte eine datengetriebene Pipeline zur Vorhersage von Umweltsensordaten wie Temperatur und Luftfeuchtigkeit mit Zeitreihenmodellen. Implementierte einen automatisierten Workflow für Datenbereinigung, Trendanalyse und prognostische Visualisierung zur Unterstützung von Echtzeit-IoT-Monitoring.",
+      ),
+      link: "https://github.com/rdshyamvijay/sensor-data-forecasting-iot",
+      skills: [
+        "Python",
+        "pandas",
+        "scikit-learn",
+        "statsmodels",
+        "Prophet",
+        "Matplotlib",
+        "Power BI",
+        "Jupyter Notebook",
+      ],
     },
   ],
   experience: [
     {
-      company: "Tech Company",
-      title: "Senior Software Engineer",
-      dateRange: "Jan 2022 - Present",
-      bullets: [
-        "Led development of microservices architecture serving 1M+ users",
-        "Reduced API response times by 40% through optimization",
-        "Mentored team of 5 junior developers",
-      ],
+      company: makeCopy("Outlier", "Outlier"),
+      title: makeCopy("Coder – AI Trainer", "Coder – KI-Trainer:in"),
+      dateRange: makeCopy("Nov 2024 – Aug 2025", "Nov 2024 – Aug 2025"),
+      link: "https://outlier.ai/about-us",
+      bullets: makeArrayCopy(
+        [
+          "Built and tested agentic AI environments and function-calling workflows.",
+          "Conducted LLM evaluations and RLHF-based behavioral refinements.",
+          "Improved AI reasoning, automation, and multi-turn interaction accuracy.",
+        ],
+        [
+          "Entwickelte und testete agentische KI-Umgebungen sowie Function-Calling-Workflows.",
+          "Führte LLM-Evaluierungen und RLHF-basierte Verhaltensoptimierungen durch.",
+          "Verbesserte KI-Schlussfolgerung, Automatisierung und Genauigkeit mehrstufiger Interaktionen.",
+        ],
+      ),
     },
     {
-      company: "Startup Inc",
-      title: "Full Stack Developer",
-      dateRange: "Jun 2020 - Dec 2021",
-      bullets: [
-        "Built and launched MVP product from scratch using React and Node.js",
-        "Implemented CI/CD pipeline reducing deployment time by 60%",
-        "Collaborated with product team to define technical requirements",
-      ],
+      company: makeCopy("Autup AI", "Autup AI"),
+      title: makeCopy("Co-Founder", "Mitgründer"),
+      dateRange: makeCopy("Jun 2023 – Sep 2024", "Jun 2023 – Sep 2024"),
+      link: undefined,
+      bullets: makeArrayCopy(
+        [
+          "Founded an AI automation startup serving small businesses.",
+          "Built chatbots, workflow tools, and end-to-end client automation.",
+          "Managed product, sales, and delivery across multiple AI projects.",
+        ],
+        [
+          "Gründete ein KI-Automatisierungs-Startup für kleine Unternehmen.",
+          "Entwickelte Chatbots, Workflow-Tools und End-to-End-Automatisierung für Kund:innen.",
+          "Verantwortete Produkt, Vertrieb und Delivery über mehrere KI-Projekte hinweg.",
+        ],
+      ),
     },
     {
-      company: "Digital Agency",
-      title: "Frontend Developer",
-      dateRange: "Aug 2018 - May 2020",
-      bullets: [
-        "Developed responsive web applications for 20+ clients",
-        "Improved site performance scores by 35% on average",
-        "Introduced modern JavaScript frameworks to legacy codebases",
-      ],
+      company: makeCopy("Flex", "Flex"),
+      title: makeCopy("Associate Engineer – IT", "Associate Engineer – IT"),
+      dateRange: makeCopy("Oct 2021 – Sep 2023", "Okt 2021 – Sep 2023"),
+      link: "https://flex.com/",
+      bullets: makeArrayCopy(
+        [
+          "Developed ETL pipelines integrating 10M+ records daily across databases.",
+          "Automated dashboards and CI/CD workflows improving analytics efficiency.",
+          "Led data migration to Snowflake cutting processing costs by 25%.",
+        ],
+        [
+          "Entwickelte ETL-Pipelines, die täglich über 10 Mio. Datensätze über mehrere Datenbanken integrierten.",
+          "Automatisierte Dashboards und CI/CD-Workflows und steigerte so die Analytics-Effizienz.",
+          "Leitete die Datenmigration zu Snowflake und senkte die Verarbeitungskosten um 25 %.",
+        ],
+      ),
     },
   ],
   education: [
     {
-      school: "University Name",
-      degree: "Bachelor of Science in Computer Science",
-      dateRange: "2014 - 2018",
-      achievements: [
-        "Graduated Magna Cum Laude with 3.8 GPA",
-        "Dean's List all semesters",
-        "President of Computer Science Club",
-      ],
+      school: makeCopy(
+        "Brandenburg University of Technology Cottbus-Senftenberg, Germany",
+        "Brandenburgische Technische Universität Cottbus-Senftenberg, Deutschland",
+      ),
+      degree: makeCopy("M.Sc. Artificial Intelligence", "M.Sc. Künstliche Intelligenz"),
+      dateRange: makeCopy("10/2023 – 10/2026 (expected)", "10/2023 – 10/2026 (erwartet)"),
+      achievements: makeArrayCopy([], []),
+      link: "https://www.b-tu.de/",
     },
     {
-      school: "Online Platform",
-      degree: "Full Stack Development Certificate",
-      dateRange: "2019",
-      achievements: [
-        "Completed 500+ hours of coursework",
-        "Built 10+ portfolio projects",
-        "Specialized in React and Node.js",
-      ],
+      school: makeCopy(
+        "Hindusthan Institute of Technology - Anna University, India",
+        "Hindusthan Institute of Technology - Anna University, Indien",
+      ),
+      degree: makeCopy("B.E. Computer Science and Engineering", "B.E. Informatik und Ingenieurwesen"),
+      dateRange: makeCopy("06/2017 – 04/2021", "06/2017 – 04/2021"),
+      achievements: makeArrayCopy([], []),
     },
   ],
 };

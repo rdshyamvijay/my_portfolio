@@ -1,78 +1,312 @@
 ---
-import { siteConfig } from "../config";
+import {
+  siteConfig,
+  supportedLanguages,
+  defaultLanguage,
+} from "../config";
 
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
+
+const navLabels = {
+  about: { en: "About", de: "Über mich" },
+  projects: { en: "Projects", de: "Projekte" },
+  skills: { en: "Skills", de: "Skills" },
+  experience: { en: "Experience", de: "Erfahrung" },
+  education: { en: "Education", de: "Ausbildung" },
+} as const;
+
+const toggleAriaLabels = {
+  en: "Switch to German",
+  de: "Wechsel zu Englisch",
+} as const;
 ---
 
 <header
   id="header"
-  class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
 >
-  <nav class="max-w-7xl mx-auto px-8 py-4">
-    <ul class="flex items-center gap-8 justify-center">
-      <li>
-        <a
-          href="#about"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
-        >
-          About
-        </a>
-      </li>
-      {
-        hasProjects && (
-          <li>
-            <a
-              href="#projects"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Projects
-            </a>
-          </li>
-        )
-      }
-      {
-        hasExperience && (
-          <li>
-            <a
-              href="#experience"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Experience
-            </a>
-          </li>
-        )
-      }
-      {
-        hasEducation && (
-          <li>
-            <a
-              href="#education"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Education
-            </a>
-          </li>
-        )
-      }
-    </ul>
+  <nav class="max-w-7xl mx-auto px-4 sm:px-8 py-4">
+    <div
+      class="flex items-center justify-end md:justify-center gap-3 md:gap-6 rounded-full border border-white/60 bg-slate-200/90 px-4 py-2 shadow-sm backdrop-blur-sm"
+    >
+      <ul class="hidden md:flex items-center gap-6 lg:gap-8">
+        <li>
+          <a
+            href="#about"
+            class="text-slate-500 hover:text-slate-800 transition-colors font-semibold"
+          >
+            {supportedLanguages.map((lang) => (
+              <span
+                class={`lang lang-${lang}`}
+                data-lang={lang}
+                hidden={lang !== defaultLanguage}
+                key={lang}
+              >
+                {navLabels.about[lang]}
+              </span>
+            ))}
+          </a>
+        </li>
+        <li>
+          <a
+            href="#techstacks"
+            class="text-slate-500 hover:text-slate-800 transition-colors font-semibold"
+          >
+            {supportedLanguages.map((lang) => (
+              <span
+                class={`lang lang-${lang}`}
+                data-lang={lang}
+                hidden={lang !== defaultLanguage}
+                key={lang}
+              >
+                {navLabels.skills[lang]}
+              </span>
+            ))}
+          </a>
+        </li>
+        {
+          hasProjects && (
+            <li>
+              <a
+                href="#projects"
+                class="text-slate-500 hover:text-slate-800 transition-colors font-semibold"
+              >
+                {supportedLanguages.map((lang) => (
+                  <span
+                    class={`lang lang-${lang}`}
+                    data-lang={lang}
+                    hidden={lang !== defaultLanguage}
+                    key={lang}
+                  >
+                    {navLabels.projects[lang]}
+                  </span>
+                ))}
+              </a>
+            </li>
+          )
+        }
+        {
+          hasExperience && (
+            <li>
+              <a
+                href="#experience"
+                class="text-slate-500 hover:text-slate-800 transition-colors font-semibold"
+              >
+                {supportedLanguages.map((lang) => (
+                  <span
+                    class={`lang lang-${lang}`}
+                    data-lang={lang}
+                    hidden={lang !== defaultLanguage}
+                    key={lang}
+                  >
+                    {navLabels.experience[lang]}
+                  </span>
+                ))}
+              </a>
+            </li>
+          )
+        }
+        {
+          hasEducation && (
+            <li>
+              <a
+                href="#education"
+                class="text-slate-500 hover:text-slate-800 transition-colors font-semibold"
+              >
+                {supportedLanguages.map((lang) => (
+                  <span
+                    class={`lang lang-${lang}`}
+                    data-lang={lang}
+                    hidden={lang !== defaultLanguage}
+                    key={lang}
+                  >
+                    {navLabels.education[lang]}
+                  </span>
+                ))}
+              </a>
+            </li>
+          )
+        }
+      </ul>
+
+      <button
+        type="button"
+        data-language-toggle
+        data-active-language={defaultLanguage}
+        class="toggle-button focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--accent-color)]"
+        style={`--accent-color: ${siteConfig.accentColor}`}
+        aria-label="Switch language"
+      >
+        <span class="toggle-label lang lang-en" data-lang="en">
+          EN
+        </span>
+        <span class="toggle-label lang lang-de" data-lang="de">
+          DE
+        </span>
+        <span class="toggle-knob" aria-hidden="true"></span>
+      </button>
+    </div>
   </nav>
 </header>
 
-<script>
-  window.addEventListener("scroll", () => {
+<script is:inline>
+  const DEFAULT_LANGUAGE = "${defaultLanguage}";
+
+  const updateSectionLanguage = (attribute, language) => {
+    const targetLanguage = language === "de" ? "de" : "en";
+    document.querySelectorAll(`[${attribute}]`).forEach((node) => {
+      const nodeLang = node.getAttribute(attribute);
+      if (nodeLang === targetLanguage) {
+        node.removeAttribute("hidden");
+      } else {
+        node.setAttribute("hidden", "");
+      }
+    });
+  };
+
+  const updateToggleState = (button, language) => {
+    const nextLanguage = language === "de" ? "de" : "en";
+    button.setAttribute("data-active-language", nextLanguage);
+    updateSectionLanguage("data-hero-lang", nextLanguage);
+    updateSectionLanguage("data-about-lang", nextLanguage);
+    updateSectionLanguage("data-tech-lang", nextLanguage);
+    updateSectionLanguage("data-experience-lang", nextLanguage);
+    updateSectionLanguage("data-education-lang", nextLanguage);
+    document.dispatchEvent(
+      new CustomEvent("languagechange", { detail: nextLanguage }),
+    );
+  };
+
+  const initToggle = () => {
+    const button = document.querySelector("[data-language-toggle]");
+    if (!button) return;
+
+    const apply = (lang) => updateToggleState(button, lang);
+    const currentAttr = button.getAttribute("data-active-language");
+    apply(currentAttr || DEFAULT_LANGUAGE);
+
+    if (button.dataset.animationListener === "true") return;
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const current =
+        button.getAttribute("data-active-language") || DEFAULT_LANGUAGE;
+      const next = current === "en" ? "de" : "en";
+      apply(next);
+    });
+
+    button.dataset.animationListener = "true";
+  };
+
+  const initHeaderScroll = () => {
     const header = document.getElementById("header");
-    if (window.scrollY > 100) {
-      header?.classList.add("bg-white/80", "backdrop-blur-sm");
-    } else {
-      header?.classList.remove("bg-white/80", "backdrop-blur-sm");
-    }
-  });
+    if (!header) return;
+
+    const toggleScrolledState = () => {
+      if (window.scrollY > 100) {
+        header.classList.add("bg-white/80", "backdrop-blur-sm", "shadow-sm");
+      } else {
+        header.classList.remove("bg-white/80", "backdrop-blur-sm", "shadow-sm");
+      }
+    };
+
+    window.addEventListener("scroll", toggleScrolledState);
+    toggleScrolledState();
+  };
+
+  const boot = () => {
+    initToggle();
+    initHeaderScroll();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
+  }
+
+  document.addEventListener("astro:page-load", boot);
+  document.addEventListener("astro:after-swap", boot);
 </script>
 
 <style>
   html {
     scroll-behavior: smooth;
+  }
+
+  .toggle-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 78px;
+    height: 32px;
+    padding: 0 16px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    box-shadow: inset 0 2px 4px rgb(15 23 42 / 0.12);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  .toggle-label {
+    position: absolute;
+    top: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-50%) scale(0.95);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .toggle-label[data-lang="en"] {
+    right: 16px;
+    text-align: right;
+  }
+
+  .toggle-label[data-lang="de"] {
+    left: 16px;
+    text-align: left;
+  }
+
+  .toggle-knob {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgb(15 23 42 / 0.18);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    pointer-events: none;
+  }
+
+  [data-language-toggle][data-active-language="en"] .toggle-knob {
+    transform: translateX(0);
+  }
+
+  [data-language-toggle][data-active-language="de"] .toggle-knob {
+    transform: translateX(46px);
+  }
+
+  [data-language-toggle]:hover .toggle-knob {
+    box-shadow: 0 6px 14px rgb(15 23 42 / 0.25);
+  }
+
+  [data-language-toggle][data-active-language="en"] .toggle-label[data-lang="en"] {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+
+  [data-language-toggle][data-active-language="de"] .toggle-label[data-lang="de"] {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
   }
 </style>

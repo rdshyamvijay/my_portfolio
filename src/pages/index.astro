@@ -2,38 +2,90 @@
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
+import TechStacks from "../components/TechStacks.astro";
 import Projects from "../components/Projects.astro";
 import Experience from "../components/Experience.astro";
 import Education from "../components/Education.astro";
 import Footer from "../components/Footer.astro";
-import { siteConfig } from "../config";
+import { siteConfig, defaultLanguage } from "../config";
 import "../styles/global.css";
 ---
 
-<html lang="en">
+<html lang={defaultLanguage} data-language={defaultLanguage}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={siteConfig.description} />
+    <meta name="description" content={siteConfig.description[defaultLanguage]} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
-    <title>{siteConfig.name} - {siteConfig.title}</title>
+    <title>
+      {siteConfig.name[defaultLanguage]} - {siteConfig.title[defaultLanguage]}
+    </title>
   </head>
   <body>
+    <div id="cursor-gradient" class="cursor-gradient" data-active="false"></div>
     <Header />
     <section>
       <Hero />
       <About />
+      <TechStacks />
       <Projects />
       <Experience />
       <Education />
     </section>
     <Footer />
+
+    <script is:inline>
+      const root = document.documentElement;
+      const gradient = document.getElementById("cursor-gradient");
+      let rafId = null;
+
+      const updatePosition = (event) => {
+        const { clientX, clientY } = event;
+        if (rafId !== null) return;
+        rafId = requestAnimationFrame(() => {
+          root.style.setProperty("--cursor-x", `${clientX}px`);
+          root.style.setProperty("--cursor-y", `${clientY}px`);
+          if (gradient) {
+            gradient.dataset.active = "true";
+          }
+          rafId = null;
+        });
+      };
+
+      const resetPosition = () => {
+        root.style.setProperty("--cursor-x", "50vw");
+        root.style.setProperty("--cursor-y", "50vh");
+        if (gradient) {
+          gradient.dataset.active = "false";
+        }
+      };
+
+      const initCursor = () => {
+        window.addEventListener("pointermove", updatePosition);
+        window.addEventListener("pointerleave", resetPosition);
+      };
+
+      const cleanupCursor = () => {
+        window.removeEventListener("pointermove", updatePosition);
+        window.removeEventListener("pointerleave", resetPosition);
+      };
+
+      initCursor();
+
+      document.addEventListener("astro:before-swap", () => {
+        cleanupCursor();
+      });
+      document.addEventListener("astro:after-swap", () => {
+        cleanupCursor();
+        initCursor();
+      });
+    </script>
   </body>
 </html>

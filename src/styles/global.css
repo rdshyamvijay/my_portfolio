@@ -3,3 +3,59 @@
 body {
   font-family: 'IBM Plex Mono', monospace;
 }
+
+:where(section, footer) {
+  position: relative;
+}
+
+:where(section, footer):first-of-type {
+  border-top: none;
+}
+
+:where(section, footer)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  border-top: 2px solid rgba(15, 23, 42, 0.12);
+}
+
+:where(section, footer):first-of-type::before {
+  display: none;
+}
+
+:root {
+  --cursor-x: 50vw;
+  --cursor-y: 50vh;
+}
+
+.cursor-gradient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    420px circle at var(--cursor-x) var(--cursor-y),
+    rgba(29, 78, 216, 0.22),
+    rgba(59, 130, 246, 0.12),
+    rgba(255, 255, 255, 0)
+  );
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+
+.cursor-gradient[data-active="true"] {
+  opacity: 0.9;
+}
+
+@media (pointer: coarse) {
+  .cursor-gradient {
+    display: none;
+  }
+}
+
+.lang[hidden] {
+  display: none !important;
+}

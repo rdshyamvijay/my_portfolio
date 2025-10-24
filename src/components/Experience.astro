@@ -1,5 +1,9 @@
 ---
-import { siteConfig } from "../config";
+import {
+  siteConfig,
+  supportedLanguages,
+  defaultLanguage,
+} from "../config";
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 ---
 
@@ -10,7 +14,16 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           <div class="lg:col-span-4">
             <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
-              Experience
+              {supportedLanguages.map((lang) => (
+                <span
+                  class={`lang lang-${lang}`}
+                  data-lang={lang}
+                  hidden={lang !== defaultLanguage}
+                  key={lang}
+                >
+                  {lang === "en" ? "Experience" : "Erfahrung"}
+                </span>
+              ))}
             </h2>
             <div
               class="w-[75px] h-[5px] mt-2 rounded-full"
@@ -21,7 +34,10 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
           <div class="lg:col-span-8">
             <div class="relative">
               {siteConfig.experience.map((exp, index) => (
-                <div class="relative mb-12 last:mb-0">
+                <div
+                  class="relative mb-12 last:mb-0"
+                  key={exp.title?.en ?? exp.title?.de ?? index}
+                >
                   {/* Timeline dot at top of card */}
                   <div
                     class="absolute left-1/2 -top-2 w-4 h-4 bg-white border-2 rounded-full -translate-x-1/2 z-20 transition-all duration-300"
@@ -38,30 +54,85 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
                       <div>
                         <h3 class="text-lg sm:text-xl font-semibold text-gray-900">
-                          {exp.title}
+                        {supportedLanguages.map((lang) => (
+                          <span
+                            class={`lang lang-${lang}`}
+                            data-experience-lang={lang}
+                            hidden={lang !== defaultLanguage}
+                            key={lang}
+                          >
+                            {exp.title?.[lang] ?? ""}
+                          </span>
+                        ))}
                         </h3>
-                        <p
-                          class="text-base sm:text-lg"
-                          style={`color: ${siteConfig.accentColor}`}
-                        >
-                          {exp.company}
-                        </p>
+                        {typeof exp.link === "string" && exp.link.length > 0 ? (
+                          <a
+                            href={exp.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-base sm:text-lg underline decoration-transparent transition-colors duration-200 hover:decoration-inherit"
+                            style={`color: ${siteConfig.accentColor}`}
+                          >
+                          {supportedLanguages.map((lang) => (
+                            <span
+                              class={`lang lang-${lang}`}
+                              data-experience-lang={lang}
+                              hidden={lang !== defaultLanguage}
+                              key={lang}
+                            >
+                              {exp.company?.[lang] ?? ""}
+                            </span>
+                          ))}
+                          </a>
+                        ) : (
+                          <p
+                            class="text-base sm:text-lg"
+                            style={`color: ${siteConfig.accentColor}`}
+                          >
+                            {supportedLanguages.map((lang) => (
+                              <span
+                                class={`lang lang-${lang}`}
+                                data-lang={lang}
+                                hidden={lang !== defaultLanguage}
+                                key={lang}
+                              >
+                                {exp.company?.[lang] ?? ""}
+                              </span>
+                            ))}
+                          </p>
+                        )}
                       </div>
                       <span class="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-0">
-                        {exp.dateRange}
+                        {supportedLanguages.map((lang) => (
+                          <span
+                            class={`lang lang-${lang}`}
+                            data-experience-lang={lang}
+                            hidden={lang !== defaultLanguage}
+                            key={lang}
+                          >
+                            {exp.dateRange?.[lang] ?? ""}
+                          </span>
+                        ))}
                       </span>
                     </div>
 
-                    <ul class="space-y-2">
-                      {exp.bullets.map((bullet) => (
-                        <li class="flex items-start">
-                          <span class="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 mr-3 flex-shrink-0" />
-                          <span class="text-sm sm:text-base text-gray-600">
-                            {bullet}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
+                    {supportedLanguages.map((lang) => (
+                      <ul
+                        class={`space-y-2 lang lang-${lang}`}
+                        data-experience-lang={lang}
+                        hidden={lang !== defaultLanguage}
+                        key={lang}
+                      >
+                        {(exp.bullets?.[lang] ?? []).map((bullet, bulletIndex) => (
+                          <li class="flex items-start" key={`${lang}-${bulletIndex}`}>
+                            <span class="inline-block w-1.5 h-1.5 rounded-full bg-gray-400 mt-2 mr-3 flex-shrink-0" />
+                            <span class="text-sm sm:text-base text-gray-600">
+                              {bullet}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
                   </div>
                 </div>
               ))}

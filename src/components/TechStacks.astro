@@ -1,0 +1,267 @@
+---
+import {
+  siteConfig,
+  supportedLanguages,
+  defaultLanguage,
+} from "../config";
+
+type StackEntry = {
+  name: string;
+  icon?: string;
+  color?: string;
+  abbr?: string;
+};
+
+type StackSection = {
+  title?: Record<string, string>;
+  stacks: StackEntry[];
+};
+
+const toLocalizedRecord = (value: unknown) => {
+  if (value && typeof value === "object") {
+    return value as Record<string, string>;
+  }
+  if (typeof value === "string") {
+    return supportedLanguages.reduce(
+      (acc, lang) => {
+        acc[lang] = value;
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+  }
+  return undefined;
+};
+
+const normalizeStacks = (items: unknown): StackEntry[] =>
+  Array.isArray(items)
+    ? items
+        .map((item) => ({
+          name: typeof item?.name === "string" ? item.name : "",
+          icon: typeof item?.icon === "string" ? item.icon : undefined,
+          color: typeof item?.color === "string" ? item.color : undefined,
+          abbr: typeof item?.abbr === "string" ? item.abbr : undefined,
+        }))
+        .filter((entry) => entry.name.length > 0)
+    : [];
+
+const sections: StackSection[] = Array.isArray(siteConfig.techStackSections)
+  ? siteConfig.techStackSections
+      .map((section) => ({
+        title: toLocalizedRecord(section?.title),
+        stacks: normalizeStacks(section?.stacks),
+      }))
+      .filter(
+        (section) =>
+          section.title &&
+          Object.values(section.title).some((value) => Boolean(value)) &&
+          section.stacks.length > 0,
+      )
+  : [];
+
+const legacyStacks = normalizeStacks(siteConfig.techStacks);
+
+const fallbackSkills =
+  legacyStacks.length === 0 && Array.isArray(siteConfig.skills)
+    ? siteConfig.skills
+        .filter((name) => typeof name === "string")
+        .map((name) => ({ name }))
+    : [];
+
+const fallbackStacks = legacyStacks.length > 0 ? legacyStacks : fallbackSkills;
+
+const hasSections = sections.length > 0;
+const hasFallback = fallbackStacks.length > 0;
+
+const toAlpha = (color: string | undefined, alphaHex: string) => {
+  if (!color) return undefined;
+  const trimmed = color.trim();
+  return /^#([0-9a-fA-F]{6})$/.test(trimmed)
+    ? `${trimmed}${alphaHex}`
+    : trimmed;
+};
+
+const cardBorder = toAlpha(siteConfig.accentColor, "33") ?? siteConfig.accentColor;
+const headerAccent =
+  toAlpha(siteConfig.accentColor, "55") ?? siteConfig.accentColor;
+
+const getAbbreviation = (stack: StackEntry) => {
+  if (stack.abbr) return stack.abbr;
+  if (!stack.name) return "?";
+  const parts = stack.name.split(/[\s/-]+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  const abbr = parts.map((part) => part[0]).join("");
+  return abbr.slice(0, 3).toUpperCase();
+};
+
+const sectionHeading = {
+  en: "My Techstacks & Skills",
+  de: "Meine Techstacks & Skills",
+} as const;
+
+const fallbackHeading = {
+  en: "Tech Stack",
+  de: "Tech-Stack",
+} as const;
+---
+
+{(hasSections || hasFallback) && (
+  <section id="techstacks" class="p-8 sm:p-12 md:p-16 lg:p-24">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col gap-8 lg:gap-10">
+        <div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
+            {supportedLanguages.map((lang) => (
+              <span
+                class={`lang lang-${lang}`}
+                data-tech-lang={lang}
+                hidden={lang !== defaultLanguage}
+                key={lang}
+              >
+                {sectionHeading[lang]}
+              </span>
+            ))}
+          </h2>
+          <div
+            class="w-[75px] h-[5px] mt-2 rounded-full"
+            style={`background-color: ${siteConfig.accentColor}`}
+          ></div>
+        </div>
+
+        {hasSections ? (
+          <div class="grid gap-6 lg:gap-8 lg:grid-cols-2">
+            {sections.map((section, index) => (
+              <div
+                class="flex flex-col gap-4 rounded-2xl border bg-white/80 p-6 shadow-sm shadow-gray-200/40 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
+                style={`border-color: ${cardBorder};`}
+                key={section.title?.en ?? section.title?.de ?? index}
+              >
+                <div class="space-y-1">
+                  <h3 class="text-xl sm:text-2xl font-semibold text-gray-800">
+                    {supportedLanguages.map((lang) => (
+                      <span
+                        class={`lang lang-${lang}`}
+                        data-tech-lang={lang}
+                        hidden={lang !== defaultLanguage}
+                        key={lang}
+                      >
+                        {section.title?.[lang] ?? ""}
+                      </span>
+                    ))}
+                  </h3>
+                  <div
+                    class="h-[3px] w-16 rounded-full"
+                    style={`background-color: ${headerAccent}`}
+                  ></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  {section.stacks.map((stack) => {
+                    const borderColor = stack.color ?? siteConfig.accentColor;
+                    const borderTint = toAlpha(borderColor, "33") ?? borderColor;
+                    const iconBg = toAlpha(stack.color, "14") ?? "#F8FAFC";
+                    return (
+                      <div
+                        class="flex items-center gap-3 rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition-all duration-150 hover:border-[var(--stack-color)] hover:shadow-md"
+                        style={`--stack-color: ${borderColor}; border-color: ${borderTint};`}
+                        key={stack.name}
+                      >
+                        <div
+                          class="flex h-12 w-12 items-center justify-center rounded-md border bg-gray-50"
+                          style={`border-color: ${borderTint}; background-color: ${iconBg};`}
+                        >
+                          {stack.icon ? (
+                            <img
+                              src={stack.icon}
+                              alt={`${stack.name} logo`}
+                              loading="lazy"
+                              class="h-8 w-8 object-contain"
+                            />
+                          ) : (
+                            <span
+                              class="text-sm font-semibold text-gray-700"
+                              style={`color: ${stack.color ?? "#334155"};`}
+                            >
+                              {getAbbreviation(stack)}
+                            </span>
+                          )}
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700">
+                          {stack.name}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div
+              class="flex flex-col gap-4 rounded-2xl border bg-white/80 p-6 shadow-sm shadow-gray-200/40"
+              style={`border-color: ${cardBorder};`}
+            >
+              <div class="space-y-1">
+                <h3 class="text-xl sm:text-2xl font-semibold text-gray-800">
+                  {supportedLanguages.map((lang) => (
+                    <span
+                      class={`lang lang-${lang}`}
+                      data-tech-lang={lang}
+                      hidden={lang !== defaultLanguage}
+                      key={lang}
+                    >
+                      {fallbackHeading[lang]}
+                    </span>
+                  ))}
+                </h3>
+                <div
+                  class="h-[3px] w-16 rounded-full"
+                  style={`background-color: ${headerAccent}`}
+                ></div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                {fallbackStacks.map((stack) => {
+                  const borderColor = stack.color ?? siteConfig.accentColor;
+                  const borderTint = toAlpha(borderColor, "33") ?? borderColor;
+                  const iconBg = toAlpha(stack.color, "14") ?? "#F8FAFC";
+                  return (
+                    <div
+                      class="flex items-center gap-3 rounded-lg border bg-white px-3 py-2 text-left shadow-sm transition-all duration-150 hover:border-[var(--stack-color)] hover:shadow-md"
+                      style={`--stack-color: ${borderColor}; border-color: ${borderTint};`}
+                      key={stack.name}
+                    >
+                      <div
+                        class="flex h-12 w-12 items-center justify-center rounded-md border bg-gray-50"
+                        style={`border-color: ${borderTint}; background-color: ${iconBg};`}
+                      >
+                        {stack.icon ? (
+                          <img
+                            src={stack.icon}
+                            alt={`${stack.name} logo`}
+                            loading="lazy"
+                            class="h-8 w-8 object-contain"
+                          />
+                        ) : (
+                          <span
+                            class="text-sm font-semibold text-gray-700"
+                            style={`color: ${stack.color ?? "#334155"};`}
+                          >
+                            {getAbbreviation(stack)}
+                          </span>
+                        )}
+                      </div>
+                      <span class="text-sm font-semibold text-gray-700">
+                        {stack.name}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+)}
