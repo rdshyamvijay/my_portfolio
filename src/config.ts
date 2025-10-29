@@ -99,6 +99,22 @@ export const siteConfig = {
       ],
     },
     {
+      name: makeCopy("Bürgergeld AI Form Assistant", "Bürgergeld AI Form Assistant"),
+      description: makeCopy(
+        "AI-powered dynamic form assistant built with Laravel 12 and Google Gemini. It helps Bürgergeld applicants complete complex government forms via an adaptive conversational interface, remembers previous answers, fills related sections automatically, and ensures compliance with official templates while delivering ready-to-submit PDFs.",
+        "KI-gestützter, dynamischer Formularassistent auf Basis von Laravel 12 und Google Gemini. Unterstützt Bürgergeld-Antragsteller:innen beim Ausfüllen komplexer Behördenformulare über eine adaptive, dialogbasierte Oberfläche, merkt sich Eingaben, füllt verwandte Abschnitte automatisch aus und stellt konforme, einreichfertige PDFs bereit.",
+      ),
+      link: "https://github.com/rdshyamvijay/Burgergeld-AI-Form-Assistant",
+      skills: [
+        "Laravel 12",
+        "PHP 8.3",
+        "Gemini API",
+        "PDFtk",
+        "Blade",
+        "REST API",
+      ],
+    },
+    {
       name: makeCopy(
         "Multi-AI Agent Customer Support System",
         "Multi-KI-Agenten-Kundensupportsystem",
@@ -128,9 +144,10 @@ export const siteConfig = {
         "pandas",
         "scikit-learn",
         "statsmodels",
-        "Prophet",
+        "Random Forest",
         "Matplotlib",
-        "Power BI",
+        "Linear Regression",
+        "Seaborn",
         "Jupyter Notebook",
       ],
     },
@@ -210,6 +227,58 @@ export const siteConfig = {
       degree: makeCopy("B.E. Computer Science and Engineering", "B.E. Informatik und Ingenieurwesen"),
       dateRange: makeCopy("06/2017 – 04/2021", "06/2017 – 04/2021"),
       achievements: makeArrayCopy([], []),
+    },
+  ],
+  certificates: [
+    {
+      title: makeCopy("Advanced SQL for Data Science", "Advanced SQL for Data Science"),
+      link: "https://drive.google.com/file/d/1GC6a_UcHilQQ_M-YxwqW84-3IC1b8JL3/view?usp=sharing",
+    },
+    {
+      title: makeCopy("Crew AI", "Crew AI"),
+      link: "https://drive.google.com/file/d/1PeUe8VWpqYzlPpwoACXIpjx0FRhe3H4c/view?usp=sharing",
+    },
+    {
+      title: makeCopy("Data Analyst Associate Certification", "Data Analyst Associate Certification"),
+      link: "https://www.datacamp.com/certificate/DAA0011618095303?dc_referrer=https%3A%2F%2Fwww.linkedin.com%2F",
+    },
+    {
+      title: makeCopy(
+        "Developing AI Systems with the OpenAI API",
+        "Entwicklung von KI-Systemen mit der OpenAI API",
+      ),
+      link: "https://drive.google.com/file/d/1fTPZZm2HkzHvCypfJkXEYxCa46a49AC9/view?usp=sharing",
+    },
+    {
+      title: makeCopy("KNIME Analytics Platform", "KNIME Analytics Platform"),
+      link: "https://drive.google.com/file/d/1O4JJMc3zNVq2Vi4g9Im2_dnByWVbv7qs/view?usp=sharing",
+    },
+    {
+      title: makeCopy("LLMOps Concepts", "LLMOps-Konzepte"),
+      link: "https://drive.google.com/file/d/1blB5MohsUekbDIc56oVo2v-2tWhtsbvW/view?usp=sharing",
+    },
+    {
+      title: makeCopy("Power BI – Integrating AI and ML", "Power BI – Integration von KI und ML"),
+      link: "https://drive.google.com/file/d/1kSm19IvJOwLoW41yzj6DWCuapMq3E-1V/view?usp=sharing",
+    },
+    {
+      title: makeCopy(
+        "Prompt Engineering with the OpenAI API",
+        "Prompt Engineering mit der OpenAI API",
+      ),
+      link: "https://drive.google.com/file/d/16GGwxOxaeenms3bmdBNd1kYJXXsgUVJK/view?usp=sharing",
+    },
+    {
+      title: makeCopy("Tableau for Data Science", "Tableau für Data Science"),
+      link: "https://drive.google.com/file/d/1D324y-FlRO1y3WPX-4TkE0VsXD4C3l8-/view?usp=sharing",
+    },
+    {
+      title: makeCopy("Working with Hugging Face", "Arbeiten mit Hugging Face"),
+      link: "https://drive.google.com/file/d/1FExEWxuJuwCZ5maVO2o5KUX8llJlpFdG/view?usp=sharing",
+    },
+    {
+      title: makeCopy("Working with the OpenAI API", "Arbeiten mit der OpenAI API"),
+      link: "https://drive.google.com/file/d/19tibLK2UZKvjh1XPlcw5E8VwV0WZms7A/view?usp=sharing",
     },
   ],
 };

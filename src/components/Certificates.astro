@@ -1,0 +1,75 @@
+---
+import { siteConfig, supportedLanguages, defaultLanguage } from "../config";
+
+const certificates = siteConfig.certificates ?? [];
+---
+
+{certificates.length > 0 && (
+  <section id="certificates" class="p-8 sm:p-12 md:p-16 lg:p-24">
+    <div class="max-w-6xl mx-auto">
+      <div class="space-y-8">
+        <div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
+            {supportedLanguages.map((lang) => (
+              <span
+                class={`lang lang-${lang}`}
+                data-certificate-lang={lang}
+                hidden={lang !== defaultLanguage}
+                key={lang}
+              >
+                {lang === "en" ? "Certificates" : "Zertifikate"}
+              </span>
+            ))}
+          </h2>
+          <div
+            class="w-[75px] h-[5px] mt-2 rounded-full"
+            style={`background-color: ${siteConfig.accentColor}`}
+          ></div>
+        </div>
+
+        <div class="grid gap-4 sm:gap-6 md:gap-8 sm:grid-cols-2 xl:grid-cols-3">
+          {certificates.map((certificate, index) => (
+            <a
+              href={certificate.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative flex flex-col gap-3 rounded-xl border border-gray-200 bg-white/80 p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-md"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="text-xs font-mono text-gray-500"
+                  style={{ color: siteConfig.accentColor }}
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <svg
+                  class="h-4 w-4 text-gray-400 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M5 12h14" />
+                  <path d="M12 5l7 7-7 7" />
+                </svg>
+              </div>
+
+              {supportedLanguages.map((lang) => (
+                <h3
+                  class={`text-base sm:text-lg font-semibold text-gray-800 lang lang-${lang}`}
+                  data-certificate-lang={lang}
+                  hidden={lang !== defaultLanguage}
+                  key={lang}
+                >
+                  {certificate.title?.[lang] ?? ""}
+                </h3>
+              ))}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+)}

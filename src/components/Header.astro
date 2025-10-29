@@ -175,6 +175,7 @@ const toggleAriaLabels = {
     updateSectionLanguage("data-tech-lang", nextLanguage);
     updateSectionLanguage("data-experience-lang", nextLanguage);
     updateSectionLanguage("data-education-lang", nextLanguage);
+    updateSectionLanguage("data-certificate-lang", nextLanguage);
     document.dispatchEvent(
       new CustomEvent("languagechange", { detail: nextLanguage }),
     );

@@ -33,7 +33,7 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 
           <div class="lg:col-span-8">
             <div class="space-y-8">
-            {siteConfig.projects.slice(0, 3).map((project, index) => {
+              {siteConfig.projects.slice(0, 4).map((project, index) => {
                 const Component = project.link ? "a" : "div";
                 const linkProps = project.link
                   ? {
